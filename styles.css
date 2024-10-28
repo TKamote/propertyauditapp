@@ -60,17 +60,17 @@
 .title-container {
     display: flex;
     align-items: center;
-    padding-left: 15px;
+    padding-left: 10px;
     gap: 15px;  /* Space between title and input */
 }
 .header h1 {
-    font-size: 24px;
+    font-size: 20px;
     color: #333;
     margin: 0;
     white-space: nowrap;  /* Prevent line breaks */
 }
 .location-input {
-    font-size: 24px;
+    font-size: 12px;
     font-weight: bold;
     border: none;
     border-bottom: 2px solid #ddd;
@@ -139,26 +139,36 @@
 
 /* Form Elements */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+}
+.subheader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
+    /* margin-bottom: 2px; */
     font-weight: bold;
+    padding-right: 10px;
 }
 
 input[type="text"],
 textarea {
     width: 100%;
-    padding: 8px;
+    padding: 5px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .photo-section {
-    margin: 15px 0;
+    margin: 5px 0;
 }
 
 .photo-preview {
