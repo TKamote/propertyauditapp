@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const inspectionItems = document.querySelectorAll('.inspection-item');
     const resetButton = document.getElementById('resetButton');
     const exportWordButton = document.getElementById('exportWordButton');
-    const printButton = document.getElementById('printButton');
 
     // Handle photo uploads
     inspectionItems.forEach(item => {
@@ -130,10 +129,6 @@ document.addEventListener('DOMContentLoaded', function() {
         exportWordButton.innerHTML = '<i class="fas fa-file-word"></i> Export to Word';
     }
 });
-    // Print functionality
-    printButton.addEventListener('click', function() {
-        window.print();
-    });
 
     // Load saved data on page load
     loadFromLocalStorage();

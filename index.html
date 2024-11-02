@@ -4,36 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pre-Termination Report</title>
-    
-    <!-- Load libraries from CDN with specific versions -->
-    <script src="https://unpkg.com/docx@7.8.2/build/index.js"></script>
-    <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"></script>
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    
-    <!-- Your CSS -->
     <link rel="stylesheet" href="styles.css" />
-    
-    <!-- Library check script -->
-    <script>
-        window.addEventListener('load', function() {
-            if (typeof docx === 'undefined') {
-                console.error('docx library not loaded');
-            }
-            if (typeof saveAs === 'undefined') {
-                console.error('FileSaver library not loaded');
-            }
-        });
-    </script>
 </head>
   <body>
     <div class="toolbar">
       <button id="resetButton" class="btn">
         <i class="fas fa-undo"></i> Reset All
-      </button>
-      <button id="printButton" class="btn">
-        <i class="fas fa-print"></i> Print
       </button>
       <button id="exportWordButton" class="btn">
         <i class="fas fa-file-word"></i> Export to Word
