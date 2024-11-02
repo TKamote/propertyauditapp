@@ -1,249 +1,368 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.8.2/docx.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <title>Pre-Termination Report</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-  </head>
-  <body>
+    <style>
+        :root {
+            --primary-color: #2B579A;
+            --border-color: #dee2e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .toolbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover { background: #e9ecef; }
+        .btn-primary { 
+            background: var(--primary-color);
+            color: white;
+        }
+        .btn-primary:hover { background: #1e3c6e; }
+
+        .a4-landscape {
+            width: 297mm;
+            height: 210mm;
+            margin: 60px auto 20px;
+            background: white;
+            padding: 20mm;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #333;
+            white-space: nowrap;
+        }
+
+        .location-input {
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            border-bottom: 2px solid #ddd;
+            padding: 2px 8px;
+            min-width: 200px;
+            color: #333;
+        }
+
+        .location-input:focus {
+            outline: none;
+            border-bottom-color: var(--primary-color);
+        }
+
+        .inspection-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20mm;
+        }
+
+        .inspection-item {
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+            background: #fff;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .info-row h4 {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .photo-section {
+            margin: 15px 0;
+        }
+
+        .photo-preview {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed var(--border-color);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-top: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        @media print {
+            .toolbar { display: none; }
+            .a4-landscape {
+                margin: 0;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
     <div class="toolbar">
-      <button id="resetButton" class="btn">
-        <i class="fas fa-undo"></i> Reset All
-      </button>
-      <button id="printButton" class="btn">
-        <i class="fas fa-print"></i> Print
-      </button>
-      <button id="exportWordButton" class="btn">
-        <i class="fas fa-file-word"></i> Export to Word
-      </button>
-      <button id="submitButton" class="btn btn-primary">
-        <i class="fas fa-save"></i> Submit
-      </button>
+        <button id="resetButton" class="btn">Reset All</button>
+        <button id="printButton" class="btn">Print</button>
+        <button id="exportWordButton" class="btn">Export to Word</button>
+        <button id="submitButton" class="btn btn-primary">Submit</button>
     </div>
 
     <div class="a4-landscape" id="reportContainer">
-      <div class="header">
-        <div class="title-container">
-          <h1>Pre-Termination Report @</h1>
-          <input
-            type="text"
-            id="locationInput"
-            class="location-input"
-            placeholder="Enter Workshop Site"
-            value=""
-          />
+        <div class="header">
+            <h1>Pre-Termination Report @</h1>
+            <input type="text" id="locationInput" class="location-input" placeholder="Enter Workshop Site"/>
         </div>
-      </div>
 
-      <div class="inspection-grid">
-        <!-- Cards 1-4 with enhanced structure -->
-        <div class="inspection-item" data-card="1">
-          <form class="inspection-form" novalidate>
-            <div class="subheader">
-              <h4>S/N:</h4>
+        <div class="inspection-grid">
+            <div class="inspection-item">
+                <div class="info-row">
+                    <h4>S/N: S01</h4>
+                </div>
+                <div class="info-row">
+                    <h4>Location: Main Entrance</h4>
+                </div>
+                <div class="photo-section">
+                    <label>Photo:</label>
+                    <input type="file" accept="image/*" style="display:none" />
+                    <div class="photo-preview">
+                        <span>Click to add photo</span>
+                    </div>
+                </div>
+                <div>
+                    <label>Comments:</label>
+                    <textarea placeholder="Enter comments"></textarea>
+                </div>
             </div>
-            <div class="form-group">
-              <div class="subheader">
-                <label for="location1">Location:</label>
-                <input
-                  type="text"
-                  id="location1"
-                  name="location"
-                  placeholder="Enter location"
-                  required
-                />
-              </div>
-              <div class="error-message"></div>
+
+            <div class="inspection-item">
+                <div class="info-row">
+                    <h4>S/N: S02</h4>
+                </div>
+                <div class="info-row">
+                    <h4>Location: Machine Room</h4>
+                </div>
+                <div class="photo-section">
+                    <label>Photo:</label>
+                    <input type="file" accept="image/*" style="display:none" />
+                    <div class="photo-preview">
+                        <span>Click to add photo</span>
+                    </div>
+                </div>
+                <div>
+                    <label>Comments:</label>
+                    <textarea placeholder="Enter comments"></textarea>
+                </div>
             </div>
-            <div class="photo-section">
-              <label for="photo1">Photo:</label>
-              <input
-                type="file"
-                id="photo1"
-                name="photo"
-                accept="image/*"
-                class="photo-input"
-                required
-              />
-              <div class="photo-preview" id="preview1">
-                <span class="placeholder-text">Click to add photo</span>
-              </div>
-              <div class="error-message"></div>
+
+            <div class="inspection-item">
+                <div class="info-row">
+                    <h4>S/N: S03</h4>
+                </div>
+                <div class="info-row">
+                    <h4>Location: Storage Area</h4>
+                </div>
+                <div class="photo-section">
+                    <label>Photo:</label>
+                    <input type="file" accept="image/*" style="display:none" />
+                    <div class="photo-preview">
+                        <span>Click to add photo</span>
+                    </div>
+                </div>
+                <div>
+                    <label>Comments:</label>
+                    <textarea placeholder="Enter comments"></textarea>
+                </div>
             </div>
-            <div class="form-group">
-              <label for="comments1">Comments:</label>
-              <textarea
-                id="comments1"
-                name="comments"
-                placeholder="Enter comments"
-                rows="4"
-                required
-              ></textarea>
-              <div class="error-message"></div>
+
+            <div class="inspection-item">
+                <div class="info-row">
+                    <h4>S/N: S04</h4>
+                </div>
+                <div class="info-row">
+                    <h4>Location: Testing Bay</h4>
+                </div>
+                <div class="photo-section">
+                    <label>Photo:</label>
+                    <input type="file" accept="image/*" style="display:none" />
+                    <div class="photo-preview">
+                        <span>Click to add photo</span>
+                    </div>
+                </div>
+                <div>
+                    <label>Comments:</label>
+                    <textarea placeholder="Enter comments"></textarea>
+                </div>
             </div>
-          </form>
         </div>
-        <div class="inspection-item" data-card="1">
-          <form class="inspection-form" novalidate>
-            <div class="form-group">
-              <div class="subheader">
-                <h4>S/N:</h4>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="subheader">
-                <label for="location1">Location:</label>
-                <input
-                  type="text"
-                  id="location1"
-                  name="location"
-                  placeholder="Enter location"
-                  required
-                />
-              </div>
-              <div class="error-message"></div>
-            </div>
-            <div class="photo-section">
-              <label for="photo1">Photo:</label>
-              <input
-                type="file"
-                id="photo1"
-                name="photo"
-                accept="image/*"
-                class="photo-input"
-                required
-              />
-              <div class="photo-preview" id="preview1">
-                <span class="placeholder-text">Click to add photo</span>
-              </div>
-              <div class="error-message"></div>
-            </div>
-            <div class="form-group">
-              <label for="comments1">Comments:</label>
-              <textarea
-                id="comments1"
-                name="comments"
-                placeholder="Enter comments"
-                rows="4"
-                required
-              ></textarea>
-              <div class="error-message"></div>
-            </div>
-          </form>
-        </div>
-        <div class="inspection-item" data-card="1">
-          <form class="inspection-form" novalidate>
-            <div class="form-group">
-              <div class="subheader">
-                <h4>S/N:</h4>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="subheader">
-                <label for="location1">Location:</label>
-                <input
-                  type="text"
-                  id="location1"
-                  name="location"
-                  placeholder="Enter location"
-                  required
-                />
-              </div>
-              <div class="error-message"></div>
-            </div>
-            <div class="photo-section">
-              <label for="photo1">Photo:</label>
-              <input
-                type="file"
-                id="photo1"
-                name="photo"
-                accept="image/*"
-                class="photo-input"
-                required
-              />
-              <div class="photo-preview" id="preview1">
-                <span class="placeholder-text">Click to add photo</span>
-              </div>
-              <div class="error-message"></div>
-            </div>
-            <div class="form-group">
-              <label for="comments1">Comments:</label>
-              <textarea
-                id="comments1"
-                name="comments"
-                placeholder="Enter comments"
-                rows="4"
-                required
-              ></textarea>
-              <div class="error-message"></div>
-            </div>
-          </form>
-        </div>
-        <div class="inspection-item" data-card="1">
-          <form class="inspection-form" novalidate>
-            <div class="form-group">
-              <div class="subheader">
-                <h4>S/N:</h4>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="subheader">
-                <label for="location1">Location:</label>
-                <input
-                  type="text"
-                  id="location1"
-                  name="location"
-                  placeholder="Enter location"
-                  required
-                />
-              </div>
-              <div class="error-message"></div>
-            </div>
-            <div class="photo-section">
-              <label for="photo1">Photo:</label>
-              <input
-                type="file"
-                id="photo1"
-                name="photo"
-                accept="image/*"
-                class="photo-input"
-                required
-              />
-              <div class="photo-preview" id="preview1">
-                <span class="placeholder-text">Click to add photo</span>
-              </div>
-              <div class="error-message"></div>
-            </div>
-            <div class="form-group">
-              <label for="comments1">Comments:</label>
-              <textarea
-                id="comments1"
-                name="comments"
-                placeholder="Enter comments"
-                rows="4"
-                required
-              ></textarea>
-              <div class="error-message"></div>
-            </div>
-          </form>
-        </div>
-        <!-- Repeat for cards 2-4 with incremented IDs -->
-      </div>
     </div>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay">
-      <div class="spinner"></div>
-      <div class="loading-text">Processing...</div>
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const locationInput = document.getElementById('locationInput');
+            const inspectionItems = document.querySelectorAll('.inspection-item');
+            const resetButton = document.getElementById('resetButton');
+            const exportWordButton = document.getElementById('exportWordButton');
+            const printButton = document.getElementById('printButton');
 
-    <script src="script.js"></script>
-  </body>
+            // Handle photo uploads
+            inspectionItems.forEach(item => {
+                const photoPreview = item.querySelector('.photo-preview');
+                const fileInput = item.querySelector('input[type="file"]');
+
+                photoPreview.addEventListener('click', () => {
+                    fileInput.click();
+                });
+
+                fileInput.addEventListener('change', function(e) {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            photoPreview.style.backgroundImage = `url(${e.target.result})`;
+                            photoPreview.innerHTML = '';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            });
+
+            // Reset functionality
+            resetButton.addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset all forms?')) {
+                    locationInput.value = '';
+                    inspectionItems.forEach(item => {
+                        const textarea = item.querySelector('textarea');
+                        const preview = item.querySelector('.photo-preview');
+                        const fileInput = item.querySelector('input[type="file"]');
+                        
+                        textarea.value = '';
+                        preview.style.backgroundImage = '';
+                        preview.innerHTML = '<span>Click to add photo</span>';
+                        fileInput.value = '';
+                    });
+                }
+            });
+
+            // Export to Word
+            exportWordButton.addEventListener('click', async function() {
+                try {
+                    const doc = new docx.Document({
+                        sections: [{
+                            properties: {
+                                page: {
+                                    size: {
+                                        orientation: docx.PageOrientation.LANDSCAPE,
+                                        width: '297mm',
+                                        height: '210mm',
+                                    },
+                                    margin: {
+                                        top: '20mm',
+                                        right: '20mm',
+                                        bottom: '20mm',
+                                        left: '20mm',
+                                    },
+                                },
+                            },
+                            children: [
+                                new docx.Paragraph({
+                                    text: `Pre-Termination Report @ ${locationInput.value}`,
+                                    heading: docx.HeadingLevel.HEADING_1,
+                                    spacing: { after: 400 }
+                                }),
+                                ...Array.from(inspectionItems).flatMap((item, index) => {
+                                    const serialNo = item.querySelector('.info-row h4').textContent;
+                                    const location = item.querySelectorAll('.info-row h4')[1].textContent;
+                                    const comments = item.querySelector('textarea').value;
+
+                                    return [
+                                        new docx.Paragraph({
+                                            text: serialNo,
+                                            spacing: { before: 400, after: 200 }
+                                        }),
+                                        new docx.Paragraph({
+                                            text: location,
+                                            spacing: { after: 200 }
+                                        }),
+                                        new docx.Paragraph({
+                                            text: `Comments: ${comments}`,
+                                            spacing: { after: 400 }
+                                        }),
+                                        // Add page break except for last item
+                                        ...(index < inspectionItems.length - 1 ? [
+                                            new docx.Paragraph({
+                                                text: '',
+                                                pageBreakBefore: true
+                                            })
+                                        ] : [])
+                                    ];
+                                })
+                            ],
+                        }],
+                    });
+
+                    const buffer = await docx.Packer.toBlob(doc);
+                    saveAs(buffer, `Pre-Termination_Report_${locationInput.value}_${new Date().toISOString().split('T')[0]}.docx`);
+
+                } catch (error) {
+                    console.error('Error generating document:', error);
+                    alert('Error generating document. Please try again.');
+                }
+            });
+
+            // Print functionality
+            printButton.addEventListener('click', function() {
+                window.print();
+            });
+        });
+    </script>
+</body>
 </html>
