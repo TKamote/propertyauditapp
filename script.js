@@ -1,159 +1,76 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Store references to important elements
     const locationInput = document.getElementById('locationInput');
-    const forms = document.querySelectorAll('.inspection-form');
-    const submitButton = document.getElementById('submitButton');
+    const inspectionItems = document.querySelectorAll('.inspection-item');
     const resetButton = document.getElementById('resetButton');
     const exportWordButton = document.getElementById('exportWordButton');
     const printButton = document.getElementById('printButton');
 
-    // Handle photo inputs and previews
-    forms.forEach(form => {
-        const photoInput = form.querySelector('.photo-input');
-        const photoPreview = form.querySelector('.photo-preview');
+    // Handle photo uploads
+    inspectionItems.forEach(item => {
+        const photoPreview = item.querySelector('.photo-preview');
+        const fileInput = item.querySelector('input[type="file"]');
 
-        photoInput.addEventListener('change', function(e) {
+        photoPreview.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function(e) {
             const file = this.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     photoPreview.style.backgroundImage = `url(${e.target.result})`;
-                    photoPreview.textContent = '';
+                    photoPreview.innerHTML = '';
                 };
                 reader.readAsDataURL(file);
-            } else {
-                photoPreview.style.backgroundImage = '';
-                photoPreview.textContent = 'No image selected';
             }
-        });
-
-        // Make preview clickable to trigger file input
-        photoPreview.addEventListener('click', () => {
-            photoInput.click();
         });
     });
 
-    // Validate Photo Number format (S01, S02, etc.)
-    function validatePhotoNo(value) {
-        const pattern = /^S[0-9]{2}$/;
-        return pattern.test(value);
-    }
-
-    // Collect all form data
-    function collectFormData() {
-        const reportData = {
+    // Save data to localStorage
+    function saveToLocalStorage() {
+        const data = {
             location: locationInput.value,
-            timestamp: new Date().toLocaleString(),
-            inspections: []
+            items: Array.from(inspectionItems).map(item => ({
+                comments: item.querySelector('textarea').value
+            }))
         };
-
-        forms.forEach((form, index) => {
-            const photoNo = form.querySelector('[name="photoNo"]').value;
-            const location = form.querySelector('[name="location"]').value;
-            const comments = form.querySelector('[name="comments"]').value;
-            const photoInput = form.querySelector('[name="photo"]');
-            const photoFile = photoInput.files[0];
-
-            const inspectionData = {
-                photoNo: photoNo,
-                location: location,
-                comments: comments,
-                photoUrl: photoFile ? URL.createObjectURL(photoFile) : null
-            };
-
-            reportData.inspections.push(inspectionData);
-        });
-
-        return reportData;
+        localStorage.setItem('reportData', JSON.stringify(data));
     }
 
-    // Validate all forms
-    function validateForms() {
-        let isValid = true;
-        const errors = [];
-
-        if (!locationInput.value.trim()) {
-            errors.push('Main location is required');
-            isValid = false;
-        }
-
-        forms.forEach((form, index) => {
-            const photoNo = form.querySelector('[name="photoNo"]').value;
-            const location = form.querySelector('[name="location"]').value;
-            const comments = form.querySelector('[name="comments"]').value;
-            const photo = form.querySelector('[name="photo"]').files[0];
-
-            if (!validatePhotoNo(photoNo)) {
-                errors.push(`Card ${index + 1}: Invalid photo number format (should be S01, S02, etc.)`);
-                isValid = false;
-            }
-            if (!location.trim()) {
-                errors.push(`Card ${index + 1}: Location is required`);
-                isValid = false;
-            }
-            if (!comments.trim()) {
-                errors.push(`Card ${index + 1}: Comments are required`);
-                isValid = false;
-            }
-            if (!photo) {
-                errors.push(`Card ${index + 1}: Photo is required`);
-                isValid = false;
-            }
-        });
-
-        if (!isValid) {
-            alert('Please correct the following errors:\n\n' + errors.join('\n'));
-        }
-
-        return isValid;
-    }
-
-    // Save form data to localStorage
-    function saveToLocalStorage(data) {
-        try {
-            localStorage.setItem('reportData', JSON.stringify(data));
-        } catch (error) {
-            console.error('Error saving to localStorage:', error);
-        }
-    }
-
-    // Load form data from localStorage
+    // Load data from localStorage
     function loadFromLocalStorage() {
-        try {
-            const savedData = localStorage.getItem('reportData');
-            return savedData ? JSON.parse(savedData) : null;
-        } catch (error) {
-            console.error('Error loading from localStorage:', error);
-            return null;
+        const savedData = localStorage.getItem('reportData');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            locationInput.value = data.location || '';
+            data.items.forEach((item, index) => {
+                if (index < inspectionItems.length) {
+                    inspectionItems[index].querySelector('textarea').value = item.comments || '';
+                }
+            });
         }
     }
 
-    // Auto-save form data as user types
-    forms.forEach(form => {
-        form.addEventListener('input', () => {
-            if (form.querySelector('[name="photo"]').files.length > 0) {
-                const data = collectFormData();
-                saveToLocalStorage(data);
-            }
-        });
+    // Auto-save on input
+    locationInput.addEventListener('input', saveToLocalStorage);
+    inspectionItems.forEach(item => {
+        item.querySelector('textarea').addEventListener('input', saveToLocalStorage);
     });
 
-    locationInput.addEventListener('input', () => {
-        const data = collectFormData();
-        saveToLocalStorage(data);
-    });
-
-    // Reset all forms
+    // Reset functionality
     resetButton.addEventListener('click', function() {
-        if (confirm('Are you sure you want to reset all forms? This cannot be undone.')) {
+        if (confirm('Are you sure you want to reset all forms?')) {
             locationInput.value = '';
-            forms.forEach(form => {
-                form.reset();
-                const preview = form.querySelector('.photo-preview');
-                if (preview) {
-                    preview.style.backgroundImage = '';
-                    preview.textContent = 'No image selected';
-                }
+            inspectionItems.forEach(item => {
+                const textarea = item.querySelector('textarea');
+                const preview = item.querySelector('.photo-preview');
+                const fileInput = item.querySelector('input[type="file"]');
+                
+                textarea.value = '';
+                preview.style.backgroundImage = '';
+                preview.innerHTML = '<span>Click to add photo</span>';
+                fileInput.value = '';
             });
             localStorage.removeItem('reportData');
         }
@@ -161,94 +78,77 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Export to Word
     exportWordButton.addEventListener('click', async function() {
-        if (!validateForms()) {
-            return;
-        }
-
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        loadingOverlay.style.display = 'flex';
-
         try {
-            const reportData = collectFormData();
-            
-            // Create a new Document
             const doc = new docx.Document({
                 sections: [{
                     properties: {
                         page: {
                             size: {
-                                orientation: docx.PageOrientation.PORTRAIT,
-                                width: '210mm',
-                                height: '297mm',
+                                orientation: docx.PageOrientation.LANDSCAPE,
+                                width: '297mm',
+                                height: '210mm',
                             },
                             margin: {
-                                top: '10mm',
-                                right: '10mm',
-                                bottom: '10mm',
-                                left: '10mm',
+                                top: '20mm',
+                                right: '20mm',
+                                bottom: '20mm',
+                                left: '20mm',
                             },
                         },
                     },
                     children: [
                         new docx.Paragraph({
-                            text: `Pre-Termination Report @ ${reportData.location}`,
+                            text: `Pre-Termination Report @ ${locationInput.value}`,
                             heading: docx.HeadingLevel.HEADING_1,
+                            spacing: { after: 400 }
                         }),
-                        ...reportData.inspections.map((item, index) => ([
-                            new docx.Paragraph({
-                                text: `Photo No: ${item.photoNo}`,
-                                spacing: { before: 400, after: 200 },
-                            }),
-                            new docx.Paragraph({
-                                text: `Location: ${item.location}`,
-                                spacing: { after: 200 },
-                            }),
-                            new docx.Paragraph({
-                                text: `Comments: ${item.comments}`,
-                                spacing: { after: 400 },
-                            }),
-                            // Add page break after every 4 items except the last
-                            ...(index > 0 && (index + 1) % 4 === 0 && index !== reportData.inspections.length - 1
-                                ? [new docx.Paragraph({ pageBreakBefore: true })]
-                                : [])
-                        ])).flat(),
+                        ...Array.from(inspectionItems).flatMap((item, index) => {
+                            const serialNo = item.querySelector('.info-row h4').textContent;
+                            const location = item.querySelectorAll('.info-row h4')[1].textContent;
+                            const comments = item.querySelector('textarea').value;
+                            const preview = item.querySelector('.photo-preview');
+                            const hasPhoto = preview.style.backgroundImage !== '';
+
+                            return [
+                                new docx.Paragraph({
+                                    text: serialNo,
+                                    spacing: { before: 400, after: 200 }
+                                }),
+                                new docx.Paragraph({
+                                    text: location,
+                                    spacing: { after: 200 }
+                                }),
+                                new docx.Paragraph({
+                                    text: `Comments: ${comments}`,
+                                    spacing: { after: 400 }
+                                }),
+                                ...(index < inspectionItems.length - 1 ? [
+                                    new docx.Paragraph({
+                                        text: '',
+                                        pageBreakBefore: true
+                                    })
+                                ] : [])
+                            ];
+                        })
                     ],
                 }],
             });
 
-            // Generate and save the document
             const buffer = await docx.Packer.toBlob(doc);
-            const fileName = `Pre-Termination_Report_${reportData.location}_${new Date().toISOString().split('T')[0]}.docx`;
+            const fileName = `Pre-Termination_Report_${locationInput.value || 'Untitled'}_${new Date().toISOString().split('T')[0]}.docx`;
             saveAs(buffer, fileName);
 
         } catch (error) {
             console.error('Error generating document:', error);
             alert('Error generating document. Please try again.');
-        } finally {
-            loadingOverlay.style.display = 'none';
         }
     });
 
     // Print functionality
     printButton.addEventListener('click', function() {
-        if (!validateForms()) {
-            return;
-        }
         window.print();
     });
 
-    // Initialize form with saved data if any
-    const savedData = loadFromLocalStorage();
-    if (savedData) {
-        locationInput.value = savedData.location;
-        savedData.inspections.forEach((inspection, index) => {
-            if (index < forms.length) {
-                const form = forms[index];
-                form.querySelector('[name="photoNo"]').value = inspection.photoNo;
-                form.querySelector('[name="location"]').value = inspection.location;
-                form.querySelector('[name="comments"]').value = inspection.comments;
-                // Note: We can't restore file inputs due to security restrictions
-            }
-        });
-    }
+    // Load saved data on page load
+    loadFromLocalStorage();
 });

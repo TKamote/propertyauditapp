@@ -1,8 +1,5 @@
-/* Common styles */
 :root {
     --primary-color: #2B579A;
-    --error-color: #dc3545;
-    --success-color: #28a745;
     --border-color: #dee2e6;
 }
 
@@ -13,7 +10,7 @@
     font-family: Arial, sans-serif;
 }
 
-/* Toolbar */
+/* Toolbar Styles */
 .toolbar {
     position: fixed;
     top: 0;
@@ -33,53 +30,60 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 5px;
-    background: #f8f9fa;
-    transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
-.btn:hover {
-    background: #e9ecef;
+.btn:hover { 
+    background: #e9ecef; 
 }
 
-.btn-primary {
+.btn-primary { 
     background: var(--primary-color);
     color: white;
 }
 
-.btn-primary:hover {
-    background: #1e3c6e;
-}
-.header {
-    margin-bottom: 20px;
-    position: relative;
+.btn-primary:hover { 
+    background: #1e3c6e; 
 }
 
-.title-container {
+/* Main Container */
+.a4-landscape {
+    width: 297mm;
+    height: 210mm;
+    margin: 60px auto 20px;
+    background: white;
+    padding: 20mm;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Header Styles */
+.header {
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
-    padding-left: 10px;
-    gap: 15px;  /* Space between title and input */
+    gap: 10px;
+    flex-wrap: wrap;
 }
+
 .header h1 {
-    font-size: 20px;
+    font-size: 24px;
     color: #333;
-    margin: 0;
-    white-space: nowrap;  /* Prevent line breaks */
+    white-space: nowrap;
 }
+
 .location-input {
-    font-size: 12px;
+    font-size: 24px;
     font-weight: bold;
     border: none;
     border-bottom: 2px solid #ddd;
-    background: transparent;
     padding: 2px 8px;
-    width: auto;
-    min-width: 150px;
+    min-width: 200px;
     color: #333;
-    font-family: inherit;
 }
 
 .location-input:focus {
@@ -87,49 +91,14 @@
     border-bottom-color: var(--primary-color);
 }
 
-.location-input:hover {
-    border-bottom-color: #999;
-}
-
-/* Style for placeholder */
-.location-input::placeholder {
-    color: #999;
-    opacity: 0.7;
-}
-
-/* Make sure input inherits the font properties */
-.location-input {
-    font: inherit;
-    font-family: inherit;
-}
-/* Print styles for the location input */
-@media print {
-    .location-input {
-        border: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-    }
-}
-
-/* A4 Container */
-.a4-landscape {
-    width: 297mm;
-    height: 210mm;
-    margin: 60px auto 20px;
-    background: white;
-    padding: 10mm;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-/* Grid and Cards */
+/* Grid Layout */
 .inspection-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10mm;
-    height: calc(100% - 20mm);
+    gap: 20mm;
 }
 
+/* Inspection Items */
 .inspection-item {
     border: 1px solid var(--border-color);
     border-radius: 4px;
@@ -137,38 +106,21 @@
     background: #fff;
 }
 
-/* Form Elements */
-.form-group {
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 10px;
 }
-.subheader {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: start;
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 5px;
+
+.info-row h4 {
+    margin: 0;
+    font-size: 14px;
 }
 
-label {
-    display: block;
-    /* margin-bottom: 2px; */
-    font-weight: bold;
-    padding-right: 10px;
-}
-
-input[type="text"],
-textarea {
-    width: 100%;
-    padding: 5px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    font-size: 12px;
-}
-
+/* Photo Section */
 .photo-section {
-    margin: 5px 0;
+    margin: 15px 0;
 }
 
 .photo-preview {
@@ -179,94 +131,102 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 5px;
     cursor: pointer;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-}
-
-.error-message {
-    color: var(--error-color);
-    font-size: 12px;
     margin-top: 5px;
-    min-height: 15px;
 }
 
-/* Loading Overlay */
-.loading-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255,255,255,0.9);
-    z-index: 2000;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+/* Form Elements */
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 80px;
 }
 
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid var(--primary-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
 /* Mobile Responsive */
 @media screen and (max-width: 768px) {
-    .a4-landscape {
-        width: 100%;
-        height: auto;
-        margin: 60px 10px 20px;
-        padding: 15px;
-    }
-
-    .inspection-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
     .toolbar {
+        padding: 5px;
         flex-wrap: wrap;
     }
 
     .btn {
-        font-size: 12px;
         padding: 6px 12px;
+        font-size: 14px;
     }
-    .title-container {
-        flex-wrap: wrap;
-        justify-content: flex-start;
+
+    .a4-landscape {
+        width: 100%;
+        height: auto;
+        margin: 50px 0 0 0;
+        padding: 10px;
+        box-shadow: none;
     }
-    .header h1, .location-input {
+
+    .inspection-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .header {
+        padding: 0 10px;
+    }
+
+    .header h1 {
         font-size: 20px;
+    }
+
+    .location-input {
+        font-size: 20px;
+        min-width: 150px;
+    }
+
+    .photo-preview {
+        height: 150px;
+    }
+
+    textarea {
+        min-height: 60px;
     }
 }
 
 /* Print Styles */
 @media print {
-    .toolbar {
-        display: none;
+    .toolbar { 
+        display: none; 
     }
+
+    .a4-landscape {
+        width: 297mm;
+        height: 210mm;
+        margin: 0;
+        padding: 20mm;
+        box-shadow: none;
+    }
+
+    .inspection-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20mm;
+    }
+
     .location-input {
         border: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
     }
-    .a4-landscape {
-        margin: 0;
-        padding: 10mm;
-        box-shadow: none;
+
+    /* Force background colors and images to print */
+    * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
     }
 }
