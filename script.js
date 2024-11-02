@@ -76,74 +76,60 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Export to Word
-    exportWordButton.addEventListener('click', async function() {
-        try {
-            const doc = new docx.Document({
-                sections: [{
-                    properties: {
-                        page: {
-                            size: {
-                                orientation: docx.PageOrientation.LANDSCAPE,
-                                width: '297mm',
-                                height: '210mm',
-                            },
-                            margin: {
-                                top: '20mm',
-                                right: '20mm',
-                                bottom: '20mm',
-                                left: '20mm',
-                            },
-                        },
-                    },
-                    children: [
-                        new docx.Paragraph({
-                            text: `Pre-Termination Report @ ${locationInput.value}`,
-                            heading: docx.HeadingLevel.HEADING_1,
-                            spacing: { after: 400 }
-                        }),
-                        ...Array.from(inspectionItems).flatMap((item, index) => {
-                            const serialNo = item.querySelector('.info-row h4').textContent;
-                            const location = item.querySelectorAll('.info-row h4')[1].textContent;
-                            const comments = item.querySelector('textarea').value;
-                            const preview = item.querySelector('.photo-preview');
-                            const hasPhoto = preview.style.backgroundImage !== '';
+   
+ // Export to Word
+ exportWordButton.addEventListener('click', async function() {
+    exportWordButton.disabled = true;
+    exportWordButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
 
-                            return [
-                                new docx.Paragraph({
-                                    text: serialNo,
-                                    spacing: { before: 400, after: 200 }
-                                }),
-                                new docx.Paragraph({
-                                    text: location,
-                                    spacing: { after: 200 }
-                                }),
-                                new docx.Paragraph({
-                                    text: `Comments: ${comments}`,
-                                    spacing: { after: 400 }
-                                }),
-                                ...(index < inspectionItems.length - 1 ? [
-                                    new docx.Paragraph({
-                                        text: '',
-                                        pageBreakBefore: true
-                                    })
-                                ] : [])
-                            ];
-                        })
-                    ],
-                }],
-            });
+    try {
+        // Create document content
+        const content = [];
+        const title = `Pre-Termination Report @ ${locationInput.value || 'Untitled'}`;
+        
+        content.push(title + '\n\n');
 
-            const buffer = await docx.Packer.toBlob(doc);
-            const fileName = `Pre-Termination_Report_${locationInput.value || 'Untitled'}_${new Date().toISOString().split('T')[0]}.docx`;
-            saveAs(buffer, fileName);
+        inspectionItems.forEach((item, index) => {
+            const serialNo = item.querySelector('.info-row h4').textContent.trim();
+            const location = item.querySelectorAll('.info-row h4')[1].textContent.trim();
+            const comments = item.querySelector('textarea').value.trim();
 
-        } catch (error) {
-            console.error('Error generating document:', error);
-            alert('Error generating document. Please try again.');
+            content.push(`${serialNo}\n`);
+            content.push(`${location}\n`);
+            content.push(`Comments: ${comments || 'No comments'}\n\n`);
+        });
+
+        // Create blob
+        const blob = new Blob([content.join('')], { type: 'application/msword' });
+        
+        // Create filename
+        const date = new Date().toISOString().split('T')[0];
+        const location = locationInput.value || 'Untitled';
+        const fileName = `Pre-Termination_Report_${location}_${date}.doc`;
+
+        // Try to save using different methods
+        if (window.saveAs) {
+            window.saveAs(blob, fileName);
+        } else {
+            // Fallback download method
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(url);
+            document.body.removeChild(a);
         }
-    });
-
+    } catch (error) {
+        console.error('Export error:', error);
+        alert('Failed to generate document. Please try again.');
+    } finally {
+        exportWordButton.disabled = false;
+        exportWordButton.innerHTML = '<i class="fas fa-file-word"></i> Export to Word';
+    }
+});
     // Print functionality
     printButton.addEventListener('click', function() {
         window.print();
