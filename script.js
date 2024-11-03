@@ -131,6 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         width: 100%;
                         height: 100%;
                         object-fit: cover;
+                        border-radius: 10px;
                     }
                     p {
                         margin: 0.1cm 0;
