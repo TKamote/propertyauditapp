@@ -125,6 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         height: 4.5cm;
                         overflow: hidden;
                         margin: 0.1cm 0;
+                        border-radius: 5px;
                     }
                     .photo-container img {
                         width: 100%;
