@@ -3,10 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pre-Termination Report</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <title>Inspection Report</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
     <link rel="stylesheet" href="styles.css" />
-</head>
+  </head>
   <body>
     <div class="toolbar">
       <button id="resetButton" class="btn">
@@ -22,7 +25,7 @@
 
     <div class="a4-landscape" id="reportContainer">
       <div class="header">
-        <h1>Pre-Termination Report @</h1>
+        <h1>Inspection Report @</h1>
         <input
           type="text"
           id="locationInput"
@@ -33,18 +36,18 @@
 
       <div class="inspection-grid">
         <div class="inspection-item">
-          <div class="info-row">
-            <h4>S/N: S01</h4>
-          </div>
-          <div class="info-row">
-            <h4>Location: Main Entrance</h4>
-          </div>
           <div class="photo-section">
             <label>Photo:</label>
-            <input type="file" accept="image/*" style="display: none" />
+            <input type="file" class="file-input" accept="image/*" />
             <div class="photo-preview">
               <span>Click to add photo</span>
             </div>
+          </div>
+          <div class="info-row">
+            <h4>S/N:</h4>
+          </div>
+          <div class="info-row">
+            <h4>Location:</h4>
           </div>
           <div>
             <label>Comments:</label>
@@ -53,18 +56,18 @@
         </div>
 
         <div class="inspection-item">
-          <div class="info-row">
-            <h4>S/N: S02</h4>
-          </div>
-          <div class="info-row">
-            <h4>Location: Machine Room</h4>
-          </div>
           <div class="photo-section">
             <label>Photo:</label>
-            <input type="file" accept="image/*" style="display: none" />
+            <input type="file" class="file-input" accept="image/*" />
             <div class="photo-preview">
               <span>Click to add photo</span>
             </div>
+          </div>
+          <div class="info-row">
+            <h4>S/N:</h4>
+          </div>
+          <div class="info-row">
+            <h4>Location:</h4>
           </div>
           <div>
             <label>Comments:</label>
@@ -73,18 +76,18 @@
         </div>
 
         <div class="inspection-item">
-          <div class="info-row">
-            <h4>S/N: S03</h4>
-          </div>
-          <div class="info-row">
-            <h4>Location: Storage Area</h4>
-          </div>
           <div class="photo-section">
             <label>Photo:</label>
-            <input type="file" accept="image/*" style="display: none" />
+            <input type="file" class="file-input" accept="image/*" />
             <div class="photo-preview">
               <span>Click to add photo</span>
             </div>
+          </div>
+          <div class="info-row">
+            <h4>S/N:</h4>
+          </div>
+          <div class="info-row">
+            <h4>Location:</h4>
           </div>
           <div>
             <label>Comments:</label>
@@ -93,18 +96,18 @@
         </div>
 
         <div class="inspection-item">
-          <div class="info-row">
-            <h4>S/N: S04</h4>
-          </div>
-          <div class="info-row">
-            <h4>Location: Testing Bay</h4>
-          </div>
           <div class="photo-section">
             <label>Photo:</label>
-            <input type="file" accept="image/*" style="display: none" />
+            <input type="file" class="file-input" accept="image/*" />
             <div class="photo-preview">
               <span>Click to add photo</span>
             </div>
+          </div>
+          <div class="info-row">
+            <h4>S/N:</h4>
+          </div>
+          <div class="info-row">
+            <h4>Location:</h4>
           </div>
           <div>
             <label>Comments:</label>
@@ -115,14 +118,5 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-      window.addEventListener("load", function () {
-        if (typeof docx === "undefined") {
-          alert(
-            "Document generation library failed to load. Please check your internet connection."
-          );
-        }
-      });
-    </script>
   </body>
 </html>

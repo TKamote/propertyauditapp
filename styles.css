@@ -120,7 +120,19 @@
 
 /* Photo Section */
 .photo-section {
-    margin: 15px 0;
+    margin: 10px 0;
+    position: relative;
+}
+
+.file-input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 2;
 }
 
 .photo-preview {
@@ -136,7 +148,14 @@
     background-repeat: no-repeat;
     background-position: center;
     margin-top: 5px;
+    position: relative;
+    z-index: 1;
 }
+
+.photo-preview span {
+    pointer-events: none;
+}
+
 
 /* Form Elements */
 textarea {
