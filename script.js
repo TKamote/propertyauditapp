@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                     p {
                         margin: 0.1cm 0;
-                        font-size: 9pt;
+                        font-size: 10pt;
                     }
                 </style>
             </head>
