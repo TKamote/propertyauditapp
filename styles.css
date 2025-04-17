@@ -10,8 +10,8 @@
     font-family: Arial, sans-serif;
 }
 
-/* Toolbar Styles */
-.toolbar {
+/* Control Panel Styles */
+.control-panel {
     position: fixed;
     top: 0;
     left: 0;
@@ -25,7 +25,7 @@
     justify-content: flex-end;
 }
 
-.btn {
+.action-btn {
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
@@ -38,21 +38,21 @@
     white-space: nowrap;
 }
 
-.btn:hover { 
+.action-btn:hover { 
     background: #e9ecef; 
 }
 
-.btn-primary { 
+.action-btn-primary { 
     background: var(--primary-color);
     color: white;
 }
 
-.btn-primary:hover { 
+.action-btn-primary:hover { 
     background: #1e3c6e; 
 }
 
 /* Main Container */
-.a4-landscape {
+.report-page {
     width: 297mm;
     height: 210mm;
     margin: 60px auto 20px;
@@ -62,7 +62,7 @@
 }
 
 /* Header Styles */
-.header {
+.report-header {
     margin-bottom: 20px;
     display: flex;
     align-items: center;
@@ -70,13 +70,13 @@
     flex-wrap: wrap;
 }
 
-.header h1 {
+.report-header h1 {
     font-size: 24px;
     color: #333;
     white-space: nowrap;
 }
 
-.location-input {
+.site-input {
     font-size: 24px;
     font-weight: bold;
     border: none;
@@ -86,45 +86,45 @@
     color: #333;
 }
 
-.location-input:focus {
+.site-input:focus {
     outline: none;
     border-bottom-color: var(--primary-color);
 }
 
 /* Grid Layout */
-.inspection-grid {
+.audit-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20mm;
 }
 
-/* Inspection Items */
-.inspection-item {
+/* Audit Items */
+.audit-card {
     border: 1px solid var(--border-color);
     border-radius: 4px;
     padding: 15px;
     background: #fff;
 }
 
-.info-row {
+.detail-row {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 10px;
 }
 
-.info-row h4 {
+.detail-row h4 {
     margin: 0;
     font-size: 14px;
 }
 
-/* Photo Section */
-.photo-section {
+/* Image Upload Section */
+.image-upload {
     margin: 10px 0;
     position: relative;
 }
 
-.file-input {
+.image-input {
     opacity: 0;
     position: absolute;
     top: 0;
@@ -135,7 +135,7 @@
     z-index: 2;
 }
 
-.photo-preview {
+.image-preview {
     width: 100%;
     height: 200px;
     border: 2px dashed var(--border-color);
@@ -152,10 +152,9 @@
     z-index: 1;
 }
 
-.photo-preview span {
+.image-preview span {
     pointer-events: none;
 }
-
 
 /* Form Elements */
 textarea {
@@ -175,17 +174,17 @@ label {
 
 /* Mobile Responsive */
 @media screen and (max-width: 768px) {
-    .toolbar {
+    .control-panel {
         padding: 5px;
         flex-wrap: wrap;
     }
 
-    .btn {
+    .action-btn {
         padding: 6px 12px;
         font-size: 14px;
     }
 
-    .a4-landscape {
+    .report-page {
         width: 100%;
         height: auto;
         margin: 50px 0 0 0;
@@ -193,25 +192,25 @@ label {
         box-shadow: none;
     }
 
-    .inspection-grid {
+    .audit-grid {
         grid-template-columns: 1fr;
         gap: 15px;
     }
 
-    .header {
+    .report-header {
         padding: 0 10px;
     }
 
-    .header h1 {
+    .report-header h1 {
         font-size: 20px;
     }
 
-    .location-input {
+    .site-input {
         font-size: 20px;
         min-width: 150px;
     }
 
-    .photo-preview {
+    .image-preview {
         height: 150px;
     }
 
@@ -222,11 +221,11 @@ label {
 
 /* Print Styles */
 @media print {
-    .toolbar { 
+    .control-panel { 
         display: none; 
     }
 
-    .a4-landscape {
+    .report-page {
         width: 297mm;
         height: 210mm;
         margin: 0;
@@ -234,12 +233,12 @@ label {
         box-shadow: none;
     }
 
-    .inspection-grid {
+    .audit-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 20mm;
     }
 
-    .location-input {
+    .site-input {
         border: none;
     }
 

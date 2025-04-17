@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inspection Report</title>
+    <title>Property Audit Report</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -11,42 +11,42 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="toolbar">
-      <button id="resetButton" class="btn">
+    <div class="control-panel">
+      <button id="clearFormBtn" class="action-btn">
         <i class="fas fa-undo"></i> Reset All
       </button>
-      <button id="exportWordButton" class="btn">
+      <button id="generateDocBtn" class="action-btn">
         <i class="fas fa-file-word"></i> Export to Word
       </button>
-      <button id="submitButton" class="btn btn-primary">
+      <button id="saveReportBtn" class="action-btn action-btn-primary">
         <i class="fas fa-save"></i> Submit
       </button>
     </div>
 
-    <div class="a4-landscape" id="reportContainer">
-      <div class="header">
-        <h1>Inspection Report @</h1>
+    <div class="report-page" id="auditContent">
+      <div class="report-header">
+        <h1>Property Audit Report @</h1>
         <input
           type="text"
-          id="locationInput"
-          class="location-input"
+          id="siteLocation"
+          class="site-input"
           placeholder="Enter Workshop Site"
         />
       </div>
 
-      <div class="inspection-grid">
-        <div class="inspection-item">
-          <div class="photo-section">
+      <div class="audit-grid">
+        <div class="audit-card">
+          <div class="image-upload">
             <label>Photo:</label>
-            <input type="file" class="file-input" accept="image/*" />
-            <div class="photo-preview">
+            <input type="file" class="image-input" accept="image/*" />
+            <div class="image-preview">
               <span>Click to add photo</span>
             </div>
           </div>
-          <div class="info-row">
+          <div class="detail-row">
             <h4>S/N:</h4>
           </div>
-          <div class="info-row">
+          <div class="detail-row">
             <h4>Location:</h4>
           </div>
           <div>
@@ -55,18 +55,18 @@
           </div>
         </div>
 
-        <div class="inspection-item">
-          <div class="photo-section">
+        <div class="audit-card">
+          <div class="image-upload">
             <label>Photo:</label>
-            <input type="file" class="file-input" accept="image/*" />
-            <div class="photo-preview">
+            <input type="file" class="image-input" accept="image/*" />
+            <div class="image-preview">
               <span>Click to add photo</span>
             </div>
           </div>
-          <div class="info-row">
+          <div class="detail-row">
             <h4>S/N:</h4>
           </div>
-          <div class="info-row">
+          <div class="detail-row">
             <h4>Location:</h4>
           </div>
           <div>
@@ -75,18 +75,18 @@
           </div>
         </div>
 
-        <div class="inspection-item">
-          <div class="photo-section">
+        <div class="audit-card">
+          <div class="image-upload">
             <label>Photo:</label>
-            <input type="file" class="file-input" accept="image/*" />
-            <div class="photo-preview">
+            <input type="file" class="image-input" accept="image/*" />
+            <div class="image-preview">
               <span>Click to add photo</span>
             </div>
           </div>
-          <div class="info-row">
+          <div class="detail-row">
             <h4>S/N:</h4>
           </div>
-          <div class="info-row">
+          <div class="detail-row">
             <h4>Location:</h4>
           </div>
           <div>
@@ -95,18 +95,18 @@
           </div>
         </div>
 
-        <div class="inspection-item">
-          <div class="photo-section">
+        <div class="audit-card">
+          <div class="image-upload">
             <label>Photo:</label>
-            <input type="file" class="file-input" accept="image/*" />
-            <div class="photo-preview">
+            <input type="file" class="image-input" accept="image/*" />
+            <div class="image-preview">
               <span>Click to add photo</span>
             </div>
           </div>
-          <div class="info-row">
+          <div class="detail-row">
             <h4>S/N:</h4>
           </div>
-          <div class="info-row">
+          <div class="detail-row">
             <h4>Location:</h4>
           </div>
           <div>

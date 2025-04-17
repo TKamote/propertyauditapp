@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const locationInput = document.getElementById("locationInput");
-  const inspectionItems = document.querySelectorAll(".inspection-item");
-  const resetButton = document.getElementById("resetButton");
-  const exportWordButton = document.getElementById("exportWordButton");
+  const locationInput = document.getElementById("siteLocation");
+  const inspectionItems = document.querySelectorAll(".audit-card");
+  const resetButton = document.getElementById("clearFormBtn");
+  const exportWordButton = document.getElementById("generateDocBtn");
 
   // Handle photo uploads
   inspectionItems.forEach((item) => {
-    const fileInput = item.querySelector(".file-input");
-    const photoPreview = item.querySelector(".photo-preview");
+    const fileInput = item.querySelector(".image-input");
+    const photoPreview = item.querySelector(".image-preview");
 
     fileInput.addEventListener("change", function (e) {
       const file = this.files[0];
@@ -30,8 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
       locationInput.value = "";
       inspectionItems.forEach((item) => {
         const textarea = item.querySelector("textarea");
-        const preview = item.querySelector(".photo-preview");
-        const fileInput = item.querySelector(".file-input");
+        const preview = item.querySelector(".image-preview");
+        const fileInput = item.querySelector(".image-input");
 
         textarea.value = "";
         preview.style.backgroundImage = "";
@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   });
+
   // Add this optimized compression function
   function compressImage(imgData) {
     return new Promise((resolve) => {
@@ -82,7 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Export to Word
-
   // Updated export function with optimized styling
   exportWordButton.addEventListener("click", async function () {
     try {
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Process and compress all photos first
       const processedPhotos = await Promise.all(
         Array.from(inspectionItems).map(async (item) => {
-          const photoPreview = item.querySelector(".photo-preview");
+          const photoPreview = item.querySelector(".image-preview");
           const imageData = photoPreview.dataset.imageData;
           return imageData ? await compressImage(imageData) : null;
         })
@@ -158,10 +158,9 @@ document.addEventListener("DOMContentLoaded", function () {
         tableContent += "<tr>";
         for (let j = i; j < Math.min(i + 2, inspectionItems.length); j++) {
           const item = inspectionItems[j];
-          const serialNo = item.querySelector(".info-row h4").textContent;
-          const location = item.querySelectorAll(".info-row h4")[1].textContent;
-          const comments =
-            item.querySelector("textarea").value || "No comments";
+          const serialNo = item.querySelector(".detail-row h4").textContent;
+          const location = item.querySelectorAll(".detail-row h4")[1].textContent;
+          const comments = item.querySelector("textarea").value || "No comments";
           const processedImage = processedPhotos[j];
 
           tableContent += `
@@ -193,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Create and download file
       const blob = new Blob([fullContent], { type: "application/msword" });
-      const fileName = `Pre-Termination_Report_${locationValue}_${
+      const fileName = `Property_Audit_Report_${locationValue}_${
         new Date().toISOString().split("T")[0]
       }.doc`;
 
